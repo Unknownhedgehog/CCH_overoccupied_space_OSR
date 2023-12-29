@@ -54,7 +54,7 @@ for m in mc:
         c3_acc_scores, c3_acc_k_scores, c3_acc_u_scores, c3_n_acc_scores, c3_macro_f1_scores, c3_auc, c3_db = \
             [], [], [], [], [], [], []
 
-        loops = 10
+        loops = 20
         for e in range(loops):
             x_train, x_test, y_train, y_test = train_test_split(x_k_classes, y_k_classes, test_size=0.2,
                                                                 stratify=y_k_classes)
@@ -83,7 +83,7 @@ for m in mc:
 
             # CCH results
             n_k_classes = centers_classes[i] - len(unknown_class_labels[i])
-            e_threshold = np.arange(0.1, 5, 0.025).round(3).tolist()
+            e_threshold = np.arange(0.1, 5, 0.05).round(2).tolist()
             c3_acc, c3_acc_k, c3_acc_u, c3_n_acc, c3_m_f1, c3_auc_s, c3_db_index = \
                 stream_tests.run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
                                                   unknown_class_labels[i], n_k_classes, n_u_samples[i], e_threshold)
@@ -167,11 +167,11 @@ for m in mc:
     # Fill tables
     d_clas_table.add_row([str(c1_mean_acc) + " +- " + str(c1_sd_acc), str(c1_mean_k_acc) + " +- " + str(c1_sd_k_acc),
                           str(c1_mean_u_acc) + " +- " + str(c1_sd_u_acc), str(c1_mean_n_acc) + " +- " + str(c1_sd_n_acc),
-                          str(c1_mean_m_f1s) + " +- " + str(c1_sd_m_f1s), 0])
+                          str(c1_mean_m_f1s) + " +- " + str(c1_sd_m_f1s), "-"])
 
     s_clas_table.add_row([str(c2_mean_acc) + " +- " + str(c2_sd_acc), str(c2_mean_k_acc) + " +- " + str(c2_sd_k_acc),
                           str(c2_mean_u_acc) + " +- " + str(c2_sd_u_acc), str(c2_mean_n_acc) + " +- " + str(c2_sd_n_acc),
-                          str(c2_mean_m_f1s) + " +- " + str(c2_sd_m_f1s), 0])
+                          str(c2_mean_m_f1s) + " +- " + str(c2_sd_m_f1s), "-"])
 
     cc_clas_table.add_row([str(c3_mean_acc) + "+-" + str(c3_sd_acc), str(c3_mean_k_acc) + "+-" + str(c3_sd_k_acc),
                            str(c3_mean_u_acc) + "+-" + str(c3_sd_u_acc), str(c3_mean_n_acc) + "+-" + str(c3_sd_n_acc),

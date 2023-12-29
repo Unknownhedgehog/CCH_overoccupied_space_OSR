@@ -83,8 +83,8 @@ def run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unkn
 
     y_test_combined_b = data_prep.group_known_classes(y_test_combined, unknown_labels)
     o_threshold, auc = find_threshold(k_means_model, x_test_combined, y_test_combined_b, e_threshold)
-    # print("Threshold chosen")
-    # print(o_threshold)
+
+    # print("Threshold chosen: " + str(o_threshold))
 
     # ---------- Testing phase ----------
     centers = data_prep.get_cluster_centers(k_means_model)
@@ -102,6 +102,7 @@ def run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unkn
             # Predict label with closed set classifier
             pred = lr_model.predict_one(x)
             lr_model.learn_one(x, y)
+            k_means_model.learn_one(x)
             y_pred.append(pred)
 
         else:

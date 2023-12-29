@@ -46,7 +46,7 @@ for o in openness:
         [], [], [], [], [], [], []
     c1_c3_stat = []
     c2_c3_stat = []
-    loops = 5
+    loops = 20
     for e in range(loops):
         x_train, x_test, y_train, y_test = train_test_split(x_k_classes, y_k_classes, test_size=0.2,
                                                             stratify=y_k_classes)
@@ -75,7 +75,7 @@ for o in openness:
 
         # Classifier 3 results
         n_k_classes = classes[0] - len(unknown_class_labels[0])
-        e_threshold = np.arange(0.1, 8, 0.025).round(3).tolist()
+        e_threshold = np.arange(0.1, 8, 0.05).round(2).tolist()
         # print(e_threshold)
         c3_acc, c3_acc_k, c3_acc_u, c3_n_acc, c3_m_f1, c3_auc_s, c3_db_index = \
             stream_tests.run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
@@ -127,10 +127,10 @@ for o in openness:
 
     # Fill tables
     d_clas_table.add_row([str(c1_accs) + "+-" + str(c1_sd_acc), str(c1_k_accs) + "+-" + str(c1_sd_k_acc), str(c1_u_accs) + "+-" + str(c1_sd_u_acc),
-                          str(c1_n_accs) + "+-" + str(c1_sd_n_acc), str(c1_m_f1s) + "+-" + str(c1_sd_m_f1s), 0])
+                          str(c1_n_accs) + "+-" + str(c1_sd_n_acc), str(c1_m_f1s) + "+-" + str(c1_sd_m_f1s), "-"])
 
     s_clas_table.add_row([str(c2_accs) + "+-" + str(c2_sd_acc), str(c2_k_accs) + "+-" + str(c2_sd_k_acc), str(c2_u_accs) + "+-" + str(c2_sd_u_acc),
-                          str(c2_n_accs) + "+-" + str(c2_sd_n_acc), str(c2_m_f1s) + "+-" + str(c2_sd_m_f1s), 0])
+                          str(c2_n_accs) + "+-" + str(c2_sd_n_acc), str(c2_m_f1s) + "+-" + str(c2_sd_m_f1s), "-"])
 
     cc_clas_table.add_row([str(c3_accs) + "+-" + str(c3_sd_acc), str(c3_k_accs) + "+-" + str(c3_sd_k_acc), str(c3_u_accs) + "+-" + str(c3_sd_u_acc),
                           str(c3_n_accs) + "+-" + str(c3_sd_n_acc), str(c3_m_f1s) + "+-" + str(c3_sd_m_f1s),

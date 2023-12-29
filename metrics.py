@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.metrics import auc, roc_auc_score, roc_curve, confusion_matrix, accuracy_score
-from scipy.stats import ttest_ind
+from scipy.stats import wilcoxon
 from matplotlib import pyplot
 
 
@@ -99,6 +99,7 @@ def cutoff_youdens_j(fpr, tpr, thresholds):
 
 def statistical_significance(a, b):
     """Computes the P-value of 2 sets of variables."""
-    t_stat, p_val = ttest_ind(a, b)
+    res = wilcoxon(a, b)
+    p_val = res.pvalue
 
     return p_val
