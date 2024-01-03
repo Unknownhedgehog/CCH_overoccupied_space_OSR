@@ -26,7 +26,10 @@ running the experiments. Each list contains the values of a parameter for the cr
 * rand_state: random number generation for dataset creation.
 
 The values in each list correspond in order to the dataset number. Each value can be removed, added or changed in order to 
-modify the number of datasets and their parameters.
+modify the number of datasets and their parameters. The last 2 variables do not affect datasets, they instead modify the
+experiments themselves.
+* mc: values of missing classes *β*. All the metrics of all approaches are calculated for each one.
+* p_u_s: percentage of instances to use during testing from each UC.
 
 
 ## Experiments and evaluation
