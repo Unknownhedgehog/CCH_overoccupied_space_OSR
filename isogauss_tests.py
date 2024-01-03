@@ -6,30 +6,30 @@ import data_prep
 import plots
 import metrics
 import stream_tests
-import class_params as cl_p
+import isogauss_params as b_p
 
-n_samples = cl_p.n_samples
-centers_classes = cl_p.centers_classes
-features = cl_p.features
-class_sep = cl_p.class_sep
-rand_state = cl_p.rand_state
-mc = cl_p.mc
-p_u_s = cl_p.p_u_s
+n_samples = b_p.n_samples
+centers_classes = b_p.centers_classes
+features = b_p.features
+cluster_std = b_p.cluster_std
+rand_state = b_p.rand_state
+mc = b_p.mc
+p_u_s = b_p.p_u_s
 
 d_clas_table = PrettyTable()
-d_clas_table.title = "Results Regular Classifier"
+d_clas_table.title = "Results Static"
 d_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1", "AUC"]
 s_clas_table = PrettyTable()
-s_clas_table.title = "Results Incremental Classifier"
+s_clas_table.title = "Results Incremental"
 s_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1", "AUC"]
 cc_clas_table = PrettyTable()
-cc_clas_table.title = "Results CCH"
+cc_clas_table.title = "Results sOSR"
 cc_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1", "AUC", "DB index"]
 c1_c3_clas_table = PrettyTable()
-c1_c3_clas_table.title = "Results P-value C1-CCH"
+c1_c3_clas_table.title = "Results P-value Static-sOSR"
 c1_c3_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1"]
 c2_c3_clas_table = PrettyTable()
-c2_c3_clas_table.title = "Results P-value C2-CCH"
+c2_c3_clas_table.title = "Results P-value Incremental-sOSR"
 c2_c3_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1"]
 
 for m in mc:
@@ -42,7 +42,7 @@ for m in mc:
     c1_c3_stat = []
     c2_c3_stat = []
     for i in range(n_datasets):
-        x, y = dataset_generator.create_class_dataset(n_samples[i], features[i], centers_classes[i], class_sep[i],
+        x, y = dataset_generator.create_blobs_dataset(n_samples[i], features[i], centers_classes[i], cluster_std[i],
                                                       rand_state[i])
         x_k_classes, y_k_classes, u_class_samples = data_prep.remove_class(x, y, unknown_class_labels[i])
         # plots.plot_scatter_comparison(x, y, y_k_classes, unknown_class_labels[i])
@@ -181,7 +181,7 @@ for m in mc:
     c1_c3_clas_table.add_row(c1_c3_stat)
     c2_c3_clas_table.add_row(c2_c3_stat)
 
-f_name = "Results of class datasets"
+f_name = "Results of isogauss datasets"
 with open(f_name, 'w') as w:
     w.write(d_clas_table.get_string() + "\n")
     w.write(s_clas_table.get_string() + "\n")

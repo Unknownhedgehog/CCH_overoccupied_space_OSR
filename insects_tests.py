@@ -9,19 +9,19 @@ import plots
 import stream_tests
 
 d_clas_table = PrettyTable()
-d_clas_table.title = "Results Regular Classifier"
+d_clas_table.title = "Results Static"
 d_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1", "AUC"]
 s_clas_table = PrettyTable()
-s_clas_table.title = "Results Incremental Classifier"
+s_clas_table.title = "Results Incremental"
 s_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1", "AUC"]
 cc_clas_table = PrettyTable()
-cc_clas_table.title = "Results CCH"
+cc_clas_table.title = "Results sOSR"
 cc_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1", "AUC", "DB index"]
 c1_c3_clas_table = PrettyTable()
-c1_c3_clas_table.title = "Results P-value C1-CCH"
+c1_c3_clas_table.title = "Results P-value Static-sOSR"
 c1_c3_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1"]
 c2_c3_clas_table = PrettyTable()
-c2_c3_clas_table.title = "Results P-value C2-CCH"
+c2_c3_clas_table.title = "Results P-value Incremental-sOSR"
 c2_c3_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1"]
 
 n_samples = [52848]
