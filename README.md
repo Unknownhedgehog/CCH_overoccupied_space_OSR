@@ -1,17 +1,19 @@
 # Resilience to the flowing unknown: an Open Set Recognition Framework for Data Streams
 ![alt text](streaming_osr_framework.jpg)
 ## Abstract
-Modern digital applications extensively integrate Artificial Intelligence (AI) models into their core systems, offering significant advantages for automated decision-making. 
-However, these AI-based systems encounter reliability and safety challenges when handling continuously generated data streams in complex and dynamic scenarios. 
-This work explores the concept of resilient AI systems, which must operate in the face of unexpected events, including instances belonging to patterns that have not been seen during the training process. 
-This is an issue that regular closed-set classifiers commonly encounter in streaming scenarios, as they are designed to compulsory classify any new observation into one of the training patterns 
-(i.e., the so-called *over-occupied space* problem). In batch learning, the Open Set Recognition (OSR) research area has consistently confronted this issue 
-by requiring models to robustly uphold their classification performance when processing query instances from unknown patterns. In this context, 
-this work investigates the application of an OSR framework that combines classification and clustering to address the *over-occupied space* problem in streaming scenarios. 
-Specifically, we systematically devise a benchmark comprising different classification datasets with varying ratios of known to unknown classes. 
-Experiments over this benchmark are presented to compare the performance of the proposed hybrid framework to that of individual incremental classifiers. 
-Discussions held over the obtained results highlight situations where the proposed framework performs best, and delineate 
-the limitations and hurdles encountered by incremental classifiers in effectively resolving the challenges posed by open-world streaming environments.
+Contemporary digital applications extensively integrate Artificial Intelligence (AI) models into their core systems, 
+offering significant advantages for automated decision-making. 
+Despite these benefits, AI-based systems face reliability and safety challenges when dealing with continuously generated data streams in complex and dynamic scenarios. 
+This study delves into the concept of resilient AI systems, aiming to function effectively in the presence of unexpected events, 
+including instances that deviate from patterns encountered during the training process.
+The challenge addressed here is common in streaming scenarios for regular closed-set classifiers, 
+which are forced to classify new observations into one of the training patterns, leading to the so-called *over-occupied space* problem. 
+In the realm of batch learning, the Open Set Recognition (OSR) research area has consistently tackled this issue by demanding 
+models to maintain robust classification performance even when processing query instances from unknown patterns.
+Within this context, our work explores the application of an OSR framework that integrates classification and clustering to mitigate the over-occupied space problem in streaming scenarios. 
+We systematically devise a benchmark featuring diverse classification datasets with different ratios of known to unknown classes. 
+The experiments conducted on this benchmark compare the performance of our proposed hybrid framework with that of individual incremental classifiers. 
+Discussions based on the results obtained highlight instances where the proposed framework excels, while also outlining the limitations and challenges faced by incremental classifiers in effectively addressing the complexities of open-world streaming environments.
 ## Keywords
 resilient AI, open set recognition, unknown classes, streaming, over-occupied space
 
