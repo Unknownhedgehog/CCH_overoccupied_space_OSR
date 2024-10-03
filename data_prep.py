@@ -49,7 +49,13 @@ def add_class(x_test, y_test, unknown_class_samples, unknown_class_labels, numbe
     if number_unknown_examples[0] > len(unknown_samples_list):
         number_unknown_examples[0] = len(unknown_samples_list) - 1
 
-    unknown_class_samples = sample(unknown_samples_list, number_unknown_examples[0])  # Pick random number of samples
+    try:
+        unknown_class_samples = sample(unknown_samples_list, number_unknown_examples[0])
+    except ValueError:
+        print(f"Requested number of samples ({number_unknown_examples[0]}) is too large for population size ({len(unknown_samples_list)}).")
+        unknown_class_samples = random.sample(unknown_samples_list, len(unknown_samples_list))  # Sample the entire population
+        print("Sampled entire population:", unknown_class_samples)
+
     x_test = x_test.tolist()
     y_test = y_test.tolist()
     # Add samples to x_test

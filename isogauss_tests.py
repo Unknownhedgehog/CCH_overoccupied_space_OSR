@@ -7,6 +7,7 @@ import plots
 import metrics
 import stream_tests
 import isogauss_params as b_p
+import argparse
 
 n_samples = b_p.n_samples
 centers_classes = b_p.centers_classes
@@ -15,6 +16,11 @@ cluster_std = b_p.cluster_std
 rand_state = b_p.rand_state
 mc = b_p.mc
 p_u_s = b_p.p_u_s
+
+parser = argparse.ArgumentParser(description="Choose model type")
+parser.add_argument('--model', type=str, required=True, help="Specify 'linear' or 'tree'")
+args = parser.parse_args()
+model_type = args.model
 
 d_clas_table = PrettyTable()
 d_clas_table.title = "Results Static"
@@ -31,14 +37,14 @@ c1_c3_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1"]
 c2_c3_clas_table = PrettyTable()
 c2_c3_clas_table.title = "Results P-value Incremental-sOSR"
 c2_c3_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1"]
-
+print(mc)
 for m in mc:
     print("Computing with MC: ", m)
     unknown_class_labels, n_u_samples = data_prep.generate_unknown(m, centers_classes, p_u_s, n_samples, 'random')
     c1_accs, c1_k_accs, c1_u_accs, c1_n_accs, c1_m_f1s = [], [], [], [], []
     c2_accs, c2_k_accs, c2_u_accs, c2_n_accs, c2_m_f1s = [], [], [], [], []
     c3_accs, c3_k_accs, c3_u_accs, c3_n_accs, c3_m_f1s, c3_aucs, c3_dbs = [], [], [], [], [], [], []
-    n_datasets = len(n_samples)
+    n_datasets = len(n_samples)  # There are 20 datasets, change for a shorter runtime
     c1_c3_stat = []
     c2_c3_stat = []
     for i in range(n_datasets):
@@ -64,7 +70,7 @@ for m in mc:
             # Classifier 1 results
             c1_acc, c1_acc_k, c1_acc_u, c1_n_acc, c1_m_f1 = \
                 stream_tests.run_normal_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
-                                                   unknown_class_labels[i], n_u_samples[i])
+                                                   unknown_class_labels[i], n_u_samples[i], model_type)
             c1_acc_scores.append(c1_acc)
             c1_acc_k_scores.append(c1_acc_k)
             c1_acc_u_scores.append(c1_acc_u)
@@ -74,7 +80,7 @@ for m in mc:
             # Classifier 2 results
             c2_acc, c2_acc_k, c2_acc_u, c2_n_acc, c2_m_f1 = \
                 stream_tests.run_learning_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
-                                                     unknown_class_labels[i], n_u_samples[i])
+                                                     unknown_class_labels[i], n_u_samples[i], model_type)
             c2_acc_scores.append(c2_acc)
             c2_acc_k_scores.append(c2_acc_k)
             c2_acc_u_scores.append(c2_acc_u)
@@ -86,7 +92,8 @@ for m in mc:
             e_threshold = np.arange(0.1, 5, 0.05).round(2).tolist()
             c3_acc, c3_acc_k, c3_acc_u, c3_n_acc, c3_m_f1, c3_auc_s, c3_db_index = \
                 stream_tests.run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
-                                                  unknown_class_labels[i], n_k_classes, n_u_samples[i], e_threshold)
+                                                  unknown_class_labels[i], n_k_classes, n_u_samples[i], e_threshold,
+                                                  model_type)
             c3_acc_scores.append(c3_acc)
             c3_acc_k_scores.append(c3_acc_k)
             c3_acc_u_scores.append(c3_acc_u)
@@ -181,7 +188,7 @@ for m in mc:
     c1_c3_clas_table.add_row(c1_c3_stat)
     c2_c3_clas_table.add_row(c2_c3_stat)
 
-f_name = "Results of isogauss datasets"
+f_name = "Results of isogauss datasets " + model_type + " classifier"
 with open(f_name, 'w') as w:
     w.write(d_clas_table.get_string() + "\n")
     w.write(s_clas_table.get_string() + "\n")

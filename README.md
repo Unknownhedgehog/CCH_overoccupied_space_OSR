@@ -39,15 +39,25 @@ The experiments can be run for each type of datasets with the following commands
 
 IsoGauss datasets experiments:
 ```console
-python isogauss_tests.py
+python isogauss_tests.py --model linear
 ```
 HyperCube datasets experiments:
 ```console
-python hypercube_tests.py
+python hypercube_tests.py --model linear
 ```
 Insects datasets experiments:
 ```console
-python insects_tests.py
+python insects_tests.py --model linear
+```
+Covert datasets experiments:
+```console
+python covert_tests.py --model linear
+```
+
+The `model` argument can be swapped between `linear` and `tree` for Softmax or HoeffdingTree classification respectively.
+For example, for HoeffdingTree classification:
+```console
+python isogauss_tests.py --model tree
 ```
 After finishing, a .txt file will be generated containing a table with the results of each metric (Acc, K-Acc, U-Acc, 
 N-Acc, F1, AUC, DB index) for each approach (*static*, *incremental* and *sOSR*) of the corresponding dataset. Each

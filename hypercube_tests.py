@@ -7,6 +7,7 @@ import plots
 import metrics
 import stream_tests
 import hypercube_params as cl_p
+import argparse
 
 n_samples = cl_p.n_samples
 centers_classes = cl_p.centers_classes
@@ -15,6 +16,11 @@ class_sep = cl_p.class_sep
 rand_state = cl_p.rand_state
 mc = cl_p.mc
 p_u_s = cl_p.p_u_s
+
+parser = argparse.ArgumentParser(description="Choose model type")
+parser.add_argument('--model', type=str, required=True, help="Specify 'linear' or 'tree'")
+args = parser.parse_args()
+model_type = args.model
 
 d_clas_table = PrettyTable()
 d_clas_table.title = "Results Static"
@@ -64,7 +70,7 @@ for m in mc:
             # Classifier 1 results
             c1_acc, c1_acc_k, c1_acc_u, c1_n_acc, c1_m_f1 = \
                 stream_tests.run_normal_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
-                                                   unknown_class_labels[i], n_u_samples[i])
+                                                   unknown_class_labels[i], n_u_samples[i], model_type)
             c1_acc_scores.append(c1_acc)
             c1_acc_k_scores.append(c1_acc_k)
             c1_acc_u_scores.append(c1_acc_u)
@@ -74,7 +80,7 @@ for m in mc:
             # Classifier 2 results
             c2_acc, c2_acc_k, c2_acc_u, c2_n_acc, c2_m_f1 = \
                 stream_tests.run_learning_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
-                                                     unknown_class_labels[i], n_u_samples[i])
+                                                     unknown_class_labels[i], n_u_samples[i], model_type)
             c2_acc_scores.append(c2_acc)
             c2_acc_k_scores.append(c2_acc_k)
             c2_acc_u_scores.append(c2_acc_u)
@@ -86,7 +92,8 @@ for m in mc:
             e_threshold = np.arange(0.1, 5, 0.05).round(2).tolist()
             c3_acc, c3_acc_k, c3_acc_u, c3_n_acc, c3_m_f1, c3_auc_s, c3_db_index = \
                 stream_tests.run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples,
-                                                  unknown_class_labels[i], n_k_classes, n_u_samples[i], e_threshold)
+                                                  unknown_class_labels[i], n_k_classes, n_u_samples[i], e_threshold,
+                                                  model_type)
             c3_acc_scores.append(c3_acc)
             c3_acc_k_scores.append(c3_acc_k)
             c3_acc_u_scores.append(c3_acc_u)
@@ -181,7 +188,7 @@ for m in mc:
     c1_c3_clas_table.add_row(c1_c3_stat)
     c2_c3_clas_table.add_row(c2_c3_stat)
 
-f_name = "Results of hypercube datasets"
+f_name = "Results of hypercube datasets " + model_type + " classifier"
 with open(f_name, 'w') as w:
     w.write(d_clas_table.get_string() + "\n")
     w.write(s_clas_table.get_string() + "\n")

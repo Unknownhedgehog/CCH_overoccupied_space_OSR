@@ -1,5 +1,5 @@
 import numpy as np
-from river import linear_model, cluster, stream
+from river import linear_model, cluster, stream, tree
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.metrics import davies_bouldin_score
 import metrics as osr_me
@@ -49,12 +49,16 @@ def get_roc_point(clust_model, x_test_combined, y_test_combined, e_threshold):
 
 
 def run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unknown_labels, n_k_classes, n_u_samples,
-                         e_threshold):
+                         e_threshold, model_type):
     # Transform the data into river format (dictionaries)
     train_dataset = stream.iter_array(X=x_train, y=y_train)
     # ---------- Training phase ----------
     k_means_model = cluster.STREAMKMeans(chunk_size=10, n_clusters=n_k_classes)
-    lr_model = linear_model.SoftmaxRegression()
+    if model_type == 'linear':
+        lr_model = linear_model.SoftmaxRegression()
+    else:
+        lr_model = tree.HoeffdingTreeClassifier()
+
     x_preds = []
     for x, y in train_dataset:
         # Fit the clustering model
@@ -97,7 +101,7 @@ def run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unkn
         i_dist = data_prep.calculate_inverse_distance(s_dist, 2)
         entropy = data_prep.calculate_entropy(i_dist)
 
-        # print("Entropia: ", entropy)
+        # print("Entropy: ", entropy)
         if entropy < o_threshold:
             # Predict label with closed set classifier
             pred = lr_model.predict_one(x)
@@ -132,12 +136,16 @@ def run_clust_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unkn
     return acc, acc_k, acc_u, n_acc, m_f1, auc, d_b_index
 
 
-def run_normal_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unknown_labels, n_u_samples):
+def run_normal_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unknown_labels, n_u_samples, model_type):
     # Transform the data into river format (dictionaries)
     train_dataset = stream.iter_array(X=x_train, y=y_train)
 
     # ---------- Training phase ----------
-    lr_model = linear_model.SoftmaxRegression()
+    if model_type == 'linear':
+        lr_model = linear_model.SoftmaxRegression()
+    else:
+        lr_model = tree.HoeffdingTreeClassifier()
+
     for x, y in train_dataset:
         lr_model.learn_one(x, y)
 
@@ -170,12 +178,15 @@ def run_normal_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unk
     return acc, acc_k, acc_u, n_acc, m_f1
 
 
-def run_learning_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unknown_labels, n_u_samples):
+def run_learning_clas_tests(x_train, x_test, y_train, y_test, unknown_samples, unknown_labels, n_u_samples, model_type):
     # Transform the data into river format (dictionaries)
     train_dataset = stream.iter_array(X=x_train, y=y_train)
 
     # ---------- Training phase ----------
-    lr_model = linear_model.SoftmaxRegression()
+    if model_type == 'linear':
+        lr_model = linear_model.SoftmaxRegression()
+    else:
+        lr_model = tree.HoeffdingTreeClassifier()
 
     for x, y in train_dataset:
         lr_model.learn_one(x, y)

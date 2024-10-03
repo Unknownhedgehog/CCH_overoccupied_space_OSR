@@ -30,9 +30,10 @@ c2_c3_clas_table = PrettyTable()
 c2_c3_clas_table.title = "Results P-value Incremental-sOSR"
 c2_c3_clas_table.field_names = ["Acc", "K-Acc", "U-Acc", "N-Acc", "F1"]
 
-n_samples = [52848]  # 52848
-classes = [6]
-x, y = dataset_generator.create_insect_dataset2(n_samples=n_samples[0])
+n_samples = [50000]  # 581012
+classes = [7]
+x, y = dataset_generator.create_covert_dataset(n_samples=n_samples[0])
+print(len(x))
 openness = [0.1, 0.25, 0.5, 0.7]
 for o in openness:
     unknown_class_labels, n_u_samples = data_prep.generate_unknown(o, classes, 0.1, n_samples, 'random')
@@ -42,6 +43,7 @@ for o in openness:
     c3_accs, c3_k_accs, c3_u_accs, c3_n_accs, c3_m_f1s, c3_aucs, c3_dbs = [], [], [], [], [], [], []
 
     x_k_classes, y_k_classes, u_class_samples = data_prep.remove_class(x, y, unknown_class_labels[0])
+    # plots.plot_scatter_comparison(x, y, y_k_classes, unknown_class_labels[0])
 
     c1_acc_scores, c1_acc_k_scores, c1_acc_u_scores, c1_n_acc_scores, c1_macro_f1_scores = \
         [], [], [], [], []
@@ -157,7 +159,7 @@ for o in openness:
     c1_c3_clas_table.add_row(c1_c3_stat)
     c2_c3_clas_table.add_row(c2_c3_stat)
 
-f_name = "Results of insects datasets " + model_type + " classifier"
+f_name = "Results of covert datasets " + model_type + " classifier"
 with open(f_name, 'w') as w:
     w.write(d_clas_table.get_string() + "\n")
     w.write(s_clas_table.get_string() + "\n")
